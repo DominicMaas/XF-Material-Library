@@ -61,7 +61,10 @@ namespace XF.Material.Forms.UI.Dialogs
             base.OnAppearing();
 
             TextField.TextChanged += TextField_TextChanged;
+            TextField.Completed += TextField_Completed;
 
+            TextField.Focus();
+            
             ChangeLayout();
         }
 
@@ -77,6 +80,7 @@ namespace XF.Material.Forms.UI.Dialogs
             base.OnDisappearing();
 
             TextField.TextChanged -= TextField_TextChanged;
+            TextField.Completed -= TextField_Completed;
         }
 
         protected override void OnOrientationChanged(DisplayOrientation orientation)
@@ -132,6 +136,14 @@ namespace XF.Material.Forms.UI.Dialogs
         private void TextField_TextChanged(object sender, TextChangedEventArgs e)
         {
             PositiveButton.IsEnabled = !string.IsNullOrEmpty(e.NewTextValue);
+        }
+
+        private void TextField_Completed(object sender, System.EventArgs e)
+        {
+            if (PositiveButton.IsEnabled)
+            {
+                PositiveButton.Command.Execute(null);
+            }
         }
     }
 }

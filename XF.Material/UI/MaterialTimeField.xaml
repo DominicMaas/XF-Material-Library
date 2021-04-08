@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="XF.Material.Forms.UI.MaterialTimeField"
+    x:Name="ThisControl"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:internal="clr-namespace:XF.Material.Forms.UI.Internals"
+    xmlns:material="clr-namespace:XF.Material.Forms.UI"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <ContentView.GestureRecognizers>
+        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnTap" />
+    </ContentView.GestureRecognizers>
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <material:NullImageSourceToBoolConverter x:Key="NullImageSourceToBoolConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <Grid ColumnSpacing="0" RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54" x:Name="_autoSizingRow" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <BoxView
+            BackgroundColor="{Binding BackgroundColor, Source={x:Reference ThisControl}}"
+            CornerRadius="4,4,0,0"
+            Grid.ColumnSpan="4"
+            Grid.Row="0"
+            x:Name="backgroundCard" />
+        <material:MaterialIcon
+            HeightRequest="24"
+            IsVisible="{Binding LeadingIcon, Source={x:Reference ThisControl}, Converter={StaticResource NullImageSourceToBoolConverter}}"
+            Margin="12,16,0,16"
+            Source="{Binding LeadingIcon, Source={x:Reference ThisControl}}"
+            TintColor="{Binding LeadingIconTintColor, Source={x:Reference ThisControl}}"
+            VerticalOptions="Start"
+            WidthRequest="24" />
+
+        <material:MaterialLabel
+            FontFamily="{Binding PlaceholderFontFamily, Source={x:Reference ThisControl}}"
+            FontSize="{Binding TextFontSize, Source={x:Reference ThisControl}}"
+            Grid.Column="1"
+            Grid.Row="0"
+            InputTransparent="True"
+            Margin="12,0,12,0"
+            Text="{Binding Placeholder, Source={x:Reference ThisControl}}"
+            TextColor="{Binding PlaceholderColor, Source={x:Reference ThisControl}}"
+            TypeScale="Body2"
+            VerticalOptions="Center"
+            VerticalTextAlignment="Center"
+            x:Name="placeholder" />
+
+        <internal:MaterialTimePicker
+            BackgroundColor="Transparent"
+            FontFamily="{Binding TextFontFamily, Source={x:Reference ThisControl}}"
+            FontSize="{Binding TextFontSize, Source={x:Reference ThisControl}}"
+            Format="{Binding Format, Source={x:Reference ThisControl}}"
+            Grid.Column="1"
+            HorizontalOptions="FillAndExpand"
+            IgnoreCancel="False"
+            Margin="12,28,12,0"
+            TextColor="{Binding TextColor, Source={x:Reference ThisControl}}"
+            TintColor="{Binding TintColor, Source={x:Reference ThisControl}}"
+            VerticalOptions="Start"
+            x:Name="timePicker" />
+
+        <!--  persistentUnderline  -->
+        <BoxView
+            Color="{Binding Source={x:Reference underline}, Path=Color}"
+            Grid.ColumnSpan="4"
+            Grid.Row="0"
+            HeightRequest="1"
+            HorizontalOptions="FillAndExpand"
+            IsVisible="{Binding AlwaysShowUnderline, Source={x:Reference ThisControl}}"
+            Margin="0,0,0,-1"
+            VerticalOptions="End" />
+
+        <BoxView
+            Grid.ColumnSpan="4"
+            Grid.Row="0"
+            HeightRequest="2"
+            HorizontalOptions="Center"
+            Margin="0,0,0,-1"
+            VerticalOptions="End"
+            WidthRequest="0"
+            x:Name="underline" />
+
+        <material:MaterialIcon
+            Grid.Column="2"
+            Grid.Row="0"
+            HeightRequest="24"
+            IsVisible="False"
+            Margin="0,16,12,16"
+            Source="{Binding ClearIcon, Source={x:Reference ThisControl}}"
+            TintColor="{Binding TextColor, Source={x:Reference ThisControl}}"
+            VerticalOptions="Start"
+            WidthRequest="24"
+            x:Name="clearIcon">
+            <material:MaterialIcon.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnClear" />
+            </material:MaterialIcon.GestureRecognizers>
+        </material:MaterialIcon>
+
+        <material:MaterialIcon
+            Grid.Column="3"
+            Grid.Row="0"
+            HeightRequest="24"
+            Margin="0,16,12,16"
+            Source="{Binding DropDrownArrowIcon, Source={x:Reference ThisControl}}"
+            TintColor="{Binding TintColor, Source={x:Reference ThisControl}}"
+            VerticalOptions="Start"
+            WidthRequest="24"
+            x:Name="trailingIcon" />
+
+        <material:MaterialLabel
+            FontFamily="{Binding HelperTextFontFamily, Source={x:Reference ThisControl}}"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Grid.Row="1"
+            HeightRequest="20"
+            Margin="12,4,12,0"
+            Text="{Binding SmallText, Source={x:Reference ThisControl}}"
+            TextColor="{Binding HelperTextColor, Source={x:Reference ThisControl}}"
+            TypeScale="Caption"
+            x:Name="helper">
+            <Label.Triggers>
+                <Trigger Property="Text" TargetType="Label" Value="">
+                    <Setter Property="IsVisible" Value="False" />
+                </Trigger>
+                <Trigger Property="Text" TargetType="Label" Value="{x:Null}">
+                    <Setter Property="IsVisible" Value="False" />
+                </Trigger>
+                <DataTrigger
+                    Binding="{Binding Source={x:Reference counter}, Path=IsVisible}"
+                    TargetType="Label"
+                    Value="True">
+                    <Setter Property="Grid.ColumnSpan" Value="2" />
+                </DataTrigger>
+            </Label.Triggers>
+        </material:MaterialLabel>
+        <material:MaterialLabel
+            FontFamily="{Binding HelperTextFontFamily, Source={x:Reference ThisControl}}"
+            Grid.Column="2"
+            Grid.Row="1"
+            HeightRequest="20"
+            HorizontalOptions="End"
+            Margin="0,4,12,0"
+            TextColor="{Binding HelperTextColor, Source={x:Reference ThisControl}}"
+            TypeScale="Caption"
+            x:Name="counter">
+            <Label.Triggers>
+                <Trigger Property="Text" TargetType="Label" Value="">
+                    <Setter Property="IsVisible" Value="False" />
+                </Trigger>
+                <Trigger Property="Text" TargetType="Label" Value="{x:Null}">
+                    <Setter Property="IsVisible" Value="False" />
+                </Trigger>
+            </Label.Triggers>
+        </material:MaterialLabel>
+    </Grid>
+
+</ContentView>
